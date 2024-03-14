@@ -47,7 +47,17 @@ def search(head: list, data: int, temp: list = None) -> list:  # 搜索
 
 def remove(head: list, data: int):  # 删除
     if head[1][0] == data:
-        head.remove(head[1])
+
+        if len(head[1]) >= 2:
+            try:
+                temp = head[1][2]
+                head[1] = head[1][1]
+                head[1].append(temp)
+            except IndexError:
+                head[1] = head[1][1]
+        else:
+            head.remove(head[1])
+
         return
 
     if data % head[1][0] == 0:
