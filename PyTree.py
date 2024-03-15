@@ -46,26 +46,39 @@ def search(head: list, data: int, temp: list = None) -> list:  # 搜索
 
 
 def remove(head: list, data: int):  # 删除
-    if head[1][0] == data:
-
-        if len(head[1]) >= 2:
+    if head[0] == data:
+        if len(head) >= 2:
             try:
-                temp = head[1][2]
+                temp = head[2]
+                head[0] = head[1][0]
+                head[2] = temp
                 head[1] = head[1][1]
-                head[1].append(temp)
-            except IndexError:
-                head[1] = head[1][1]
-        else:
-            head.remove(head[1])
 
-        return
+            except IndexError:
+                head[0] = head[1][0]
+                head.remove(head[1])
+            return
+
+        else:
+            del head[0]
+            return
 
     if data % head[1][0] == 0:
         remove(head[1], data)
 
+        if len(head[1]) == 0:
+            head.remove(head[1])
+        elif len(head[1]) == 0:
+            head.remove(head[2])
+
+        return
+
     elif data % head[2][0] == 0:
         remove(head[2], data)
 
-    else:
-        print("-1")
+        if len(head[1]) == 0:
+            head.remove(head[1])
+        elif len(head[2]) == 0:
+            head.remove(head[2])
+
         return
