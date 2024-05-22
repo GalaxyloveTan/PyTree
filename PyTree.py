@@ -39,6 +39,8 @@ def search(head: list, data: int, temp: list = None) -> list:  # 搜索
             temp = [2]
             temp += search(head[2], data, temp)
 
+        temp[-1] = 0
+
         return temp
     except IndexError:
         print("This data doesn't exits")
@@ -82,3 +84,22 @@ def remove(head: list, data: int):  # 删除
             head.remove(head[2])
 
         return
+
+
+#  关于树高度的计算,由于是常用操作,故不归入Extension中
+def HeightCalculate(tree: list, p: int = 0) -> int:
+    try:  # 检测当前表是否读完
+        point = 0  # 默认高度
+        # 比较子树预估高度大小,因为len()无法精确的计算出一个树表的高度,正常来说,高度比较大的那边便是书的最终高度
+        biggest = max(len(tree[1]), len(tree[2]))
+        if biggest == len(tree[1]):  # 当最高的一方是左边时
+            point += HeightCalculate(tree[1], point + 1)  # 每进到一层高度就加1,当递归操作结束时,让当前树的默认高度加上字数的高度
+            return point
+
+        else:  # 当最高的一方为右边时
+            point += HeightCalculate(tree[2], point + 1)  # 每进到一层高度就加1,当递归操作结束时,让当前树的默认高度加上字数的高度
+            return point  # 返回最终值
+
+    # 当当前表遍历完时
+    except IndexError:
+        return p + len(tree)  # 返回最终子树的高度
